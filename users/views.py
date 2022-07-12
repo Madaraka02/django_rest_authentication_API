@@ -2,10 +2,14 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from .serializers import UserSerializer
 from rest_framework.response import Response
-from .models import User
+# from .models import User
 from rest_framework.exceptions import AuthenticationFailed
 import jwt
 import datetime
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 
 # Create your views here.
 class RegisterView(APIView):
@@ -37,6 +41,8 @@ class LoginView(APIView):
             'iat':datetime.datetime.utcnow()
         }
 
+        # encoded_jwt = jwt.encode(payload, "secret", algorithm="HS256")
+        # token = jwt.decode(encoded_jwt, "secret", algorithms=["HS256"])
 
         token = jwt.encode(payload, "secret", algorithm="HS256").decode('utf-8') 
         response =  Response()
